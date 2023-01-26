@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client{
+  id String @id @default(cuid())
+  cpf String @unique
+  password String
+
+  account Account[]
+
+  @@map("clients")
+}
+
+model Account{
+  id String @id @default(cuid())
+  balance Float
+  ownerId String
+
+  owner Client @relation(fields: [ownerId], references: [id])
+
+  @@unique([id, ownerId])
+
+  @@map("accounts")
+}
