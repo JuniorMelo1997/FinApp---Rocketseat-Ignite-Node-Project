@@ -9,22 +9,11 @@ datasource db {
 
 model Client{
   id String @id @default(cuid())
+  name String
   cpf String @unique
   password String
 
-  account Account[]
+  balance Float
 
   @@map("clients")
-}
-
-model Account{
-  id String @id @default(cuid())
-  balance Float
-  ownerId String
-
-  owner Client @relation(fields: [ownerId], references: [id])
-
-  @@unique([id, ownerId])
-
-  @@map("accounts")
 }
