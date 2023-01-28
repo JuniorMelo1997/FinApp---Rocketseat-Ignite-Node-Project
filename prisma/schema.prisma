@@ -12,8 +12,23 @@ model Client{
   name String
   cpf String @unique
   password String
-
   balance Float
 
+  own Statement[]
+
   @@map("clients")
+}
+
+model Statement{
+  id String @id @default(cuid())
+  transaction Float
+  date DateTime @default(now())
+
+  ownerId String
+
+  own Client @relation(fields: [ownerId], references: [id])
+
+  @@unique([id, ownerId])
+
+  @@map("statement")
 }
