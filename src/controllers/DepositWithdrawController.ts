@@ -57,21 +57,26 @@ export class DepositWithdrawController{
             return res.json({message: "Senha incorreta"});
         }
 
-        try {    
-            const newBalance = Number(client.balance) + Number(withdrawVal);         
-            const updateBalance = await prismaClient.client.update({
-                where: {cpf: client.cpf},
-                data: {balance: newBalance}
-            })
+        try {
+             if(transaction > client.balance){
+                return res.json({message: "Saldo insuficiente para realizar o saque"})
+             }
 
-            const statement = await prismaClient.statement.create({
-                data:{
-                    transaction: Number(withdrawVal),
-                    ownerId: client.id
-                }
-            })
+                                
+             const newBalance = Number(client.balance) + Number(withdrawVal);         
+             const updateBalance = await prismaClient.client.update({
+                 where: {cpf: client.cpf},
+                 data: {balance: newBalance}
+             })
 
-            return res.json(statement);
+             const statement = await prismaClient.statement.create({
+                 data:{
+                     transaction: Number(withdrawVal),
+                     ownerId: client.id
+                 }
+             })
+
+             return res.json(statement);
         } catch (error) {
             console.log(error);
             return res.json({message: "Não foi possível realizar o depósito"});
