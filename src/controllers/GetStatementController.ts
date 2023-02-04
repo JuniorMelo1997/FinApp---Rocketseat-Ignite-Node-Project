@@ -5,7 +5,7 @@ import { compare } from "bcrypt";
 export class GetStatementController{
     async getStatement(req: Request, res: Response){
         const prismaClient = new PrismaClient();
-        const {cpf, password} = req.body;
+        const {cpf, password, date} = req.body;
 
         const client = await prismaClient.client.findFirst({where:{cpf: cpf}});
 
@@ -19,8 +19,18 @@ export class GetStatementController{
             return res.json({message: "Senha incorreta"});
         }
 
-        const statement = await prismaClient.statement.findMany();
-
+        if(!date){
+            const statement = await prismaClient.statement.findMany();
+            return res.json({statement});
+        }
+        
+        const statement = await prismaClient.statement.findMany({
+            where:{
+                date: {
+                    
+                }
+            }
+        });
         return res.json({statement});
     }
 }

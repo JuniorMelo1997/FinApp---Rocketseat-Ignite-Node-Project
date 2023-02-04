@@ -22,7 +22,7 @@ model Client{
 model Statement{
   id String @id @default(cuid())
   transaction Float
-  date DateTime @default(now())
+  date String
 
   ownerId String
 

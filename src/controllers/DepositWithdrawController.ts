@@ -2,7 +2,13 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt";
 
+const today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+const yyyy = today.getFullYear();
+
 export class DepositWithdrawController{
+
     async deposit(req:Request, res:Response){
         const {cpf, password, transaction} = req.body;
         const prismaClient = new PrismaClient();
@@ -29,7 +35,8 @@ export class DepositWithdrawController{
             const statement = await prismaClient.statement.create({
                 data:{
                     transaction: Number(transaction),
-                    ownerId: client.id
+                    ownerId: client.id,
+                    date: dd+"/"+mm+"/"+yyyy
                 }
             })
 
@@ -72,7 +79,8 @@ export class DepositWithdrawController{
              const statement = await prismaClient.statement.create({
                  data:{
                      transaction: Number(withdrawVal),
-                     ownerId: client.id
+                     ownerId: client.id,
+                     date: dd+"/"+mm+"/"+yyyy
                  }
              })
 
