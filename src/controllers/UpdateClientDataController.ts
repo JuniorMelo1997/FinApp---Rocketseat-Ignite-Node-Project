@@ -15,9 +15,9 @@ export class UpdateClientDataController{
             return res.json({message: "CPF não cadastrado"});
         }
 
-        const passwordMatches = await compare(password, client.password);
+        const passwordsMatches = compare(password, client.password);
 
-        if(!passwordMatches){
+        if(!passwordsMatches){
             return res.json({message: "Senha incorreta"});
         }
 

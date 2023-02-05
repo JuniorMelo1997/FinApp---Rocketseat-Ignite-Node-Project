@@ -16,7 +16,7 @@ export class GetBalanceController{
         const passwordsMatches = compare(password, client.password);
 
         if(!passwordsMatches){
-            return res.status(401).json({message: "Senha incorreta"});
+            return res.json({message: "Senha incorreta"});
         }
 
         return res.json({Saldo: client.balance});
