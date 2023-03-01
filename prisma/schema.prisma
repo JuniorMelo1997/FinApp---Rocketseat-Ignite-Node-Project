@@ -10,7 +10,6 @@ datasource db {
 model Client{
   id String @id @default(cuid())
   name String
-  cpf String @unique
   password String
   balance Float
 
